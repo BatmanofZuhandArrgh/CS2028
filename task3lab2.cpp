@@ -96,18 +96,25 @@ int main()
 {
     //Initialize the vectors for
     product productArray[NUM_PRODS];
-    vector<double> vectorofNums;
+    double arrayNums[35];
     
-    fstream dataFile;
-    dataFile.open("Users/MACOS/Downloads/Task3lab2.cpp/Task3lab2.cpp/Texttask3lab2.txt");
     
-    double randomvariable;
-    for (int i = 0; i<NUM_PRODS; i++){
-        dataFile >> randomvariable;
-        vectorofNums.push_back(randomvariable);
+    ifstream dataFile;
+    dataFile.open("/Users/MACOS/Downloads/Texttask3lab2.txt", ios::in);
+    int i = 0;
+    
+    string a;
+    while(dataFile >> a or !dataFile.eof()){
+        cout << a << endl;
+        i++;
+    }
+    dataFile.close();
+    
+    for (int i = 0; i<36; i++){
+        cout << arrayNums[i]<< endl;
     }
     
-    dataFile.close();
+    
     // Calculate each product's sales.
     calcSales(productArray,NUM_PRODS);
     
