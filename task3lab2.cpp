@@ -93,7 +93,7 @@ product::product(double a, double b, double c, double d, string e, bool f){
 }
 
 // Function prototypes
-void calcSales(product[], int);
+void calcSales(product[] , int);
 void showOrder(product[], int);
 void dualSort(product[], int);
 void showTotals(product[], int);
@@ -133,7 +133,7 @@ int main()
             productArray[j].setprice(a);
         if(i==3)
             productArray[j].setsales(a);
-        if(i==4)
+        if(i==3)
         {
             i=0;
             j++;
@@ -143,7 +143,12 @@ int main()
     }
     dataFile.close();
     
-    
+    for (int i = 0; i < NUM_PRODS ; i++){
+        cout << productArray[i].getid() << endl;
+        cout << productArray[i].getunits() << endl;
+        cout << productArray[i].getprice() << endl;
+        cout << productArray[i].getsales() << endl;
+    }
     
     // Calculate each product's sales.
     calcSales(productArray,NUM_PRODS);
@@ -258,4 +263,3 @@ void showTotals(product productArray[], int num)
     cout << "Total units Sold: " << total << endl;
     cout << "Total sales: $" << totalSales << endl;
 }
-
