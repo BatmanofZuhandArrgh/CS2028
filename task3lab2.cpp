@@ -74,6 +74,15 @@ bool product::gettax(){
     return Taxexempt;}
 
 //Definitions of contructors
+product::product(){
+    id = 0;
+    units = 0;
+    price = 0;
+    sales = 0;
+    description = "";
+    Taxexempt = false;
+}
+
 product::product(double a, double b, double c, double d, string e, bool f){
     id =a;
     units = b;
@@ -84,10 +93,10 @@ product::product(double a, double b, double c, double d, string e, bool f){
 }
 
 // Function prototypes
-void calcSales(product, int);
-void showOrder(product, int);
-void dualSort(product, int);
-void showTotals(product, int);
+void calcSales(product[], int);
+void showOrder(product[], int);
+void dualSort(product[], int);
+void showTotals(product[], int);
 
 // NUM_PRODS is the number of products produced.
 const int NUM_PRODS = 9;
@@ -96,23 +105,44 @@ int main()
 {
     //Initialize the vectors for
     product productArray[NUM_PRODS];
-    double arrayNums[35];
+    //double arrayNums[35];
     
     
-    ifstream dataFile;
+    /*ifstream dataFile;
     dataFile.open("/Users/MACOS/Downloads/Texttask3lab2.txt", ios::in);
     int i = 0;
     
-    string a;
+    double a;
     while(dataFile >> a or !dataFile.eof()){
-        cout << a << endl;
+        arrayNums[i] = a;
         i++;
+    }
+    dataFile.close();*/
+    
+    ifstream dataFile;
+    dataFile.open("/Users/MACOS/Downloads/Task3lab2.cpp/Task3lab2.cpp/Texttask3lab2copy.txt", ios::in);
+    int i = 0;
+    int j=0;
+    double a;
+    while(dataFile >> a){
+        if(i==0)
+            productArray[j].setid(a);
+        if(i==1)
+            productArray[j].setunits(a);
+        if(i==2)
+            productArray[j].setprice(a);
+        if(i==3)
+            productArray[j].setsales(a);
+        if(i==4)
+        {
+            i=0;
+            j++;
+        }
+        else
+            i++;
     }
     dataFile.close();
     
-    for (int i = 0; i<36; i++){
-        cout << arrayNums[i]<< endl;
-    }
     
     
     // Calculate each product's sales.
@@ -145,7 +175,9 @@ void calcSales(product productArray[],int num)
 {
     for(int i=0;i<num;i++)
     {
-        productArray[i].sales=productArray[i].units*productArray[i].price;
+        double a = productArray[i].getunits();
+        double b = productArray[i].getprice();
+        productArray[i].setsales(a*b);
     }
 }
 
@@ -164,22 +196,22 @@ void dualSort(product productArray[],int size)
     double total;
     for(i=0;i<(size-1);i++)
     {
-        total=productArray[i].sales;
-        temp=productArray[i].id;
+        total=productArray[i].getsales();
+        temp=productArray[i].getid();
         max=i;
         for(int j=i+1;j<size;j++)
         {
-            if (productArray[j].sales>total)
+            if (productArray[j].getsales()>total)
             {
-                total=productArray[j].sales;
-                temp=productArray[j].id;
+                total=productArray[j].getsales();
+                temp=productArray[j].getid();
                 max=j;
             }
         }
-        productArray[max].sales=productArray[i].sales;
-        productArray[max].id=productArray[i].id;
-        productArray[i].sales=total;
-        productArray[i].id=temp;
+        productArray[max].setsales(productArray[i].getsales());
+        productArray[max].setid(productArray[i].getid());
+        productArray[i].setsales(total);
+        productArray[i].setid(temp);
     }
 }
 
@@ -196,8 +228,10 @@ void showOrder(product productArray[], int num)
     cout << "----------------------------------\n";
     for (int i=0;i<num;i++)
     {
-        cout << productArray[i].id << "\t\t$";
-        cout << setw(8) << productArray[i].sales << endl;
+        double a = productArray[i].getid();
+        cout << a << "\t\t$";
+        double b = productArray[i].getsales();
+        cout << setw(8) << b << endl;
     }
     cout << endl;
 }
@@ -216,9 +250,12 @@ void showTotals(product productArray[], int num)
     double totalSales=0;
     for (int i= 0; i< num; i++)
     {
-        total += productArray[i].units;
-        totalSales += productArray[i].sales;
+        double a = productArray[i].getunits();
+        total += a;
+        double b = productArray[i].getsales();
+        totalSales += b;
     }
     cout << "Total units Sold: " << total << endl;
     cout << "Total sales: $" << totalSales << endl;
 }
+
