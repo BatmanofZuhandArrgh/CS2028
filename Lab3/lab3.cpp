@@ -1,7 +1,7 @@
 #include <iostream>
 #include "task1.h"
 #include <string>
-# include <math.h>
+# include <cmath>
 # define PI 3.14159265
 using namespace std;
 
@@ -51,10 +51,11 @@ int main()
             cont = false;}
     }
     cout<<"Length of First Complex Number: "<<a.getlength()<<endl;
-    cout<<"Phi of First Complex Number: "<<a.getPhi()<<endl;
+    cout<<"Phi of First Complex Number: "<<a.getPhi() << "degrees." <<endl;
     cout<<"Length of Second Complex Number: "<<b.getlength()<<endl;
-    cout<<"Phi of Second Complex Number: "<<b.getPhi()<<endl;
+    cout<<"Phi of Second Complex Number: "<<b.getPhi()<< "degrees." <<endl;
     
     
-    return 0;
+    return 42;
 }
+
