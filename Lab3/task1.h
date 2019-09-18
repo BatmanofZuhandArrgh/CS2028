@@ -10,7 +10,7 @@
 #ifndef TASK1_H
 #define TASK1_H
 #include <iostream>
-#include <math.h>
+# include <cmath>
 
 #define PI 3.14159265
 
@@ -37,6 +37,7 @@ public:
     double getPhi();
 private:
     double real,imaginary;
+    
 };
 
 #endif /* Task1_hpp */
