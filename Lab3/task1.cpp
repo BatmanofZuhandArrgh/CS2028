@@ -8,7 +8,7 @@
 
 # include "task1.h"
 # include<iostream>
-# include <math.h>
+# include <cmath>
 #define PI 3.14159265
 
 using namespace std;
@@ -64,7 +64,7 @@ double Complex::getlength()
 
 double Complex::getPhi()
 {
-    return ((acos(imaginary/real))* 180.0 / 3.14159265);
+    return (atan2(imaginary, real) *180.0 / PI);
 }
 
 Complex Complex::operator +(Complex &c)
@@ -103,3 +103,4 @@ bool Complex::operator ==(Complex &c)
 {
     return ((imaginary==c.imaginary)&&(real==c.real));
 }
+
