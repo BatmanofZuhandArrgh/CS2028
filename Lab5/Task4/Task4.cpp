@@ -21,7 +21,7 @@ int main()
     {
         
         int choice;
-        cout<<"\nPress 1 to add a board game to the shelf.\nPress 2 remove a board game from the shelf.\nPress 3 see how many board games are currently on the shelf.\nPress 4 to quit."<<endl;
+        cout<<"\nPress 1 to add a game to the collection.\nPress 2 remove a game from the collection.\nPress 3 see how many games are currently on the collection.\nPress 4 to quit."<<endl;
         cin>>choice;
         
         if(choice==1)
