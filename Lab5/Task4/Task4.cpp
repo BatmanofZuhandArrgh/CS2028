@@ -61,7 +61,7 @@ int main()
         }
         else if(choice==3)
         {
-            cout<<"\nThere are currently "<<a.getnumStored()<<" boardgames on the shelf."<<endl;
+            cout<<"\nThere are currently "<<a.getnumStored()<<" games in the collection."<<endl;
         }
         else if(choice==4)break;
         
