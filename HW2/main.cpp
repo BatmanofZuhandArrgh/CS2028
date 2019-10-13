@@ -12,6 +12,9 @@
 using namespace std;
 
 struct Room{
+    double length, width;
+    bool SWall,NWall,WWall,EWall;
+    
     
 };
 
