@@ -26,8 +26,10 @@ public:
     
     //Destructor
     ~HanoiTower(){
-        delete [] stackArray;
-    };
+        for(int i = 0; i<=StackSize; i++)
+            {
+            delete stackArray[i];
+            }}
     
     //Check if array is full
     bool isFull() const{
@@ -57,15 +59,21 @@ public:
     //Push one element onto the back
     void push(T* t){
         if(isFull()){
-            cout<< "Stack is full" <<endl;
-            /*
-            HanoiTower<T> temp = new T*[StackSize+1];
+            //cout<< "Stack is full" <<endl;
+            
+            T** temp = new T*[StackSize+1];
             for(int i=0;i<=top;i++){
                 temp[i] = stackArray[i];
             }
-            
-            stackArray = new T*[StackSize+1];
-            for(int i=0;i<temp.length();i++){
+            temp[top+1] = t;
+            stackArray = temp;
+    
+            for(int i = 0; i<=StackSize; i++)
+            {
+                delete temp[i];
+            }
+            /*stackArray = new T*[StackSize+1];
+            for(int i=0;i<(sizeof(temp)/sizeof(temp[0]));i++){
                 stackArray[i] = temp[i];
             }
             top ++;
@@ -77,7 +85,8 @@ public:
             stackArray[top] = t;}}
     
     //Remove one item at the top
-    T *pop(T* t){
+    T *pop(){
+        T* t = nullptr;
         if(isEmpty()){
             cout << "The stack is empty." << endl;}
         else{
@@ -126,11 +135,31 @@ int main() {
     cin>>numDisks;
     
     HanoiTower<double> stack(numDisks);
-    //stack.push(30);
-    //stack.push(31);
     
-    //cout<< stack.isEmpty() << endl;
+    double Stack1 = 1;
+    double Stack2 = 2;
+    double Stack3 = 3;
 
+    cout << "Pushing Stack 1" << endl;
+    stack.push(&Stack1);
+    cout << "Pushing Stack 2" << endl;
+    stack.push(&Stack2);
+    cout << "Pushing Stack 3" << endl;
+    stack.push(&Stack3);
+    printf(stack);
+    
+    cout << "The number of plates in the stack is" << stack.length()<<endl;
+    
+    cout << "Address of the top object is: " << stack.topaddress()<<endl;
+    
+    cout<<"Poping the top object!"<<endl;
+    stack.pop();
+    printf(stack);
+    
+    cout<<"Emptying the stack"<<endl;
+    stack.empty();
+    cout<< "Is the stack empty?" << stack.isEmpty() << endl;
+    printf(stack);
     
     return 0;
 }
