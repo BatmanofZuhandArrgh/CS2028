@@ -13,13 +13,13 @@ template < class T >
 class HanoiTower{
 private:
     int StackSize;
-    static int top;
+    int top;
     T **stackArray;
     
 public:
     //Constructor
     HanoiTower(int i){
-        stackArray = new T[i];
+        stackArray = new T*[i];
         StackSize = i;
         top = -1;
     }
@@ -49,20 +49,35 @@ public:
         return status;
     }
     
+    //Return the number of plates in the stacks
+    int length(){
+        return (top + 1);
+    }
+    
     //Push one element onto the back
     void push(T* t){
         if(isFull()){
-            cout << "The array is full." << endl;
-            stackArray = new T[StackSize+1];
+            cout<< "Stack is full" <<endl;
+            /*
+            HanoiTower<T> temp = new T*[StackSize+1];
+            for(int i=0;i<=top;i++){
+                temp[i] = stackArray[i];
+            }
+            
+            stackArray = new T*[StackSize+1];
+            for(int i=0;i<temp.length();i++){
+                stackArray[i] = temp[i];
+            }
             top ++;
             stackArray[top] = t;
+             */
         }
         else{
             top ++;
             stackArray[top] = t;}}
     
     //Remove one item at the top
-    T pop(T* t){
+    T *pop(T* t){
         if(isEmpty()){
             cout << "The stack is empty." << endl;}
         else{
@@ -71,33 +86,51 @@ public:
         }
         return t;}
     
-    //Return the number of plates in the stacks
-    int length(){
-        return (top + 1);
+    // Return the address of the item on top of the stack
+    T ** topaddress(){
+        return &stackArray[top];
     }
     
+
     
+    //Delete all of stacks
     void empty(){
         while(top != 0){
             delete stackArray[top];
+            stackArray[top] = nullptr;
             top--;
         }
     }
-        
-    friend void print(){
-        int top1 = top;
-        while(top1 != 0){
-            cout << stackArray[top1] << endl;
-            top1--;
-        }
-    }
     
+    //Print all results
+    template <class A>
+    friend void printf(HanoiTower<A>);
 };
 
-int main(int argc, const char * argv[]) {
+template <class A>
+void printf(HanoiTower<A> stack){
+    int len = stack.length();
+    A** top2 = stack.topaddress();
+        while(len!= 0){
+            cout << **top2 << endl;
+            top2--;
+            len--;
+        }
+}
+
+int main() {
+    //HanoiTower<double> stack(4);
     
+    int numDisks;
+    cout<<"Enter number of disks to be used in the game: "<<endl;
+    cin>>numDisks;
     
+    HanoiTower<double> stack(numDisks);
+    //stack.push(30);
+    //stack.push(31);
     
-    std::cout << "Hello, World!\n";
+    //cout<< stack.isEmpty() << endl;
+
+    
     return 0;
 }
