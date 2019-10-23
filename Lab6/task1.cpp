@@ -28,6 +28,7 @@ public:
     ~HanoiTower(){
         for(int i = 0; i<=StackSize; i++)
             {
+            stackArray[i] = nullptr;
             delete stackArray[i];
             }}
     
@@ -70,15 +71,9 @@ public:
     
             for(int i = 0; i<=StackSize; i++)
             {
+                temp[i] = nullptr;
                 delete temp[i];
             }
-            /*stackArray = new T*[StackSize+1];
-            for(int i=0;i<(sizeof(temp)/sizeof(temp[0]));i++){
-                stackArray[i] = temp[i];
-            }
-            top ++;
-            stackArray[top] = t;
-             */
         }
         else{
             top ++;
@@ -86,24 +81,29 @@ public:
     
     //Remove one item at the top
     T *pop(){
-        T* t = nullptr;
+        T *t = nullptr;
         if(isEmpty()){
             cout << "The stack is empty." << endl;}
         else{
             t = stackArray[top];
+            cout << "top = " << top << endl;
             top--;
+            cout << "top = " << top << endl;
         }
         return t;}
     
     // Return the address of the item on top of the stack
-    T ** topaddress(){
-        return &stackArray[top];
+    T * topaddress(){
+        return stackArray[top];
     }
     
 
     
     //Delete all of stacks
     void empty(){
+        if (top == -1){
+            return;
+        }
         while(top != 0){
             delete stackArray[top];
             stackArray[top] = nullptr;
@@ -113,22 +113,15 @@ public:
     
     //Print all results
     template <class A>
-    friend void printf(HanoiTower<A>);
+    friend A** access(HanoiTower<A>);
 };
 
 template <class A>
-void printf(HanoiTower<A> stack){
-    int len = stack.length();
-    A** top2 = stack.topaddress();
-        while(len!= 0){
-            cout << **top2 << endl;
-            top2--;
-            len--;
-        }
+A ** access(HanoiTower<A> stack){
+    return stack.stackArray;
 }
 
 int main() {
-    //HanoiTower<double> stack(4);
     
     int numDisks;
     cout<<"Enter number of disks to be used in the game: "<<endl;
@@ -146,20 +139,25 @@ int main() {
     stack.push(&Stack2);
     cout << "Pushing Stack 3" << endl;
     stack.push(&Stack3);
-    printf(stack);
     
-    cout << "The number of plates in the stack is" << stack.length()<<endl;
+    cout << "The number of plates in the stack is " << stack.length()<<endl;
     
-    cout << "Address of the top object is: " << stack.topaddress()<<endl;
+    cout << "The pointer at the top is: " << stack.topaddress()<<endl;
     
-    cout<<"Poping the top object!"<<endl;
+    cout << *access(stack) << endl;
+    
+    //access(stack);
+    /*cout<<"Poping the top object!"<<endl;
     stack.pop();
-    printf(stack);
+    
+    cout << stack.topaddress()<<endl;
+    printf(stack);*/
     
     cout<<"Emptying the stack"<<endl;
     stack.empty();
-    cout<< "Is the stack empty?" << stack.isEmpty() << endl;
-    printf(stack);
+    cout<< "Is the stack empty? " << stack.isEmpty() << endl;
+    cout << *access(stack) << endl;
     
     return 0;
 }
+
