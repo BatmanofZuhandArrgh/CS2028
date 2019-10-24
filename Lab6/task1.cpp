@@ -121,27 +121,42 @@ public:
     ////////////////////
     //Print all results
     template <class A>
-    friend void accessobject(HanoiTower<A>);
+    friend void displayobject(HanoiTower<A>);
     
     template <class B>
-    friend void accesspointer(HanoiTower<B>);
+    friend void displaypointer(HanoiTower<B>);
+   /*
+    template <class C>
+    friend C accessobject(HanoiTower<C>);
+    */
 };
 
-//Accessing the objects the pointers in the Stack array are pointing at
+//Displaying all the objects the pointers in the Stack array are pointing at
 template <class A>
-void accessobject(HanoiTower<A> stack){
+void displayobject(HanoiTower<A> stack){
     for (int i = 0; i<= stack.top; i++){
         cout << *stack.stackArray[i] << endl;
     }
 }
 
-//Accessing the pointer in the Stack array
+//Displaying all the pointers in the Stack array
 template <class B>
-void accesspointer(HanoiTower<B> stack){
+void displaypointer(HanoiTower<B> stack){
     for (int i = 0; i<= stack.top; i++){
         cout << *stack.stackArray[i] << endl;
     }
 }
+
+////////E R R O R/////////////////////////////////
+//Trying to access a particular element inside the stackArray
+//It can't seem to work, keeps giving error that "'stackArray' is a private member of HanoiTower<double>
+//I'm not sure what's wrong, is there anyway to do this?
+/*
+template <class C>
+C accessobject(HanoiTower<C> stack, int i){
+    return (*stack.stackArray[i]);
+}
+ */
 
 int main() {
     
@@ -166,21 +181,31 @@ int main() {
     
     cout << "The pointer at the top is: " << stack.topaddress()<<endl;
     
-    accessobject(stack);
+    cout << "Displaying the stack: " << endl;
+    displayobject(stack);
     
     //access(stack);
     cout<<"Poping the top object!"<<endl;
     stack.pop();
     cout << "Displaying the stack: " << endl;
-    accessobject(stack);
+    displayobject(stack);
     
     cout<<"Emptying the stack"<<endl;
     stack.empty();
     cout << "Displaying the stack: " << endl;
-    accessobject(stack);
-    accesspointer(stack);
+    displayobject(stack);
+    displaypointer(stack);
     cout<< "Is the stack empty? " << stack.isEmpty() << endl;
     //cout << *access(stack) << endl;
     
+    
+    ////////Testing the error/////////////
+    /*
+     int z = 0;
+    cout << "Enter the index of the object you wanna see: " << endl;
+    cin >> z;
+    cout << "The object at index " << z << " is " << accessobject(stack, z) << endl;
+    */
     return 0;
 }
+
