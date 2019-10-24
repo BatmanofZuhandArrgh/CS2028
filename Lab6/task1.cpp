@@ -17,21 +17,26 @@ private:
     T **stackArray;
     
 public:
+    ////////////////////
     //Constructor
     HanoiTower(int i){
         stackArray = new T*[i];
         StackSize = i;
         top = -1;
     }
-    
+    /*
+    ////////////////////
     //Destructor
     ~HanoiTower(){
         for(int i = 0; i<=StackSize; i++)
-            {
+        {
             stackArray[i] = nullptr;
             delete stackArray[i];
-            }}
+        }
+        delete stackArray;
+    }*/
     
+    ////////////////////
     //Check if array is full
     bool isFull() const{
         bool status;
@@ -42,6 +47,7 @@ public:
         return status;
     }
     
+    ////////////////////
     //Check if array is empty
     bool isEmpty() const{
         bool status;
@@ -52,73 +58,89 @@ public:
         return status;
     }
     
+    ////////////////////
     //Return the number of plates in the stacks
     int length(){
         return (top + 1);
     }
     
+    ////////////////////
     //Push one element onto the back
     void push(T* t){
-        if(isFull()){
-            //cout<< "Stack is full" <<endl;
-            
-            T** temp = new T*[StackSize+1];
+        if(length() == StackSize){
+            cout<< "Stack is full" <<endl;
+            /*T** temp = new T*[StackSize+1];
             for(int i=0;i<=top;i++){
                 temp[i] = stackArray[i];
             }
             temp[top+1] = t;
             stackArray = temp;
-    
+            
             for(int i = 0; i<=StackSize; i++)
             {
                 temp[i] = nullptr;
                 delete temp[i];
-            }
+            }*/
         }
         else{
             top ++;
             stackArray[top] = t;}}
     
+    ////////////////////
     //Remove one item at the top
     T *pop(){
         T *t = nullptr;
-        if(isEmpty()){
+        if(length() == 0){
             cout << "The stack is empty." << endl;}
         else{
             t = stackArray[top];
-            cout << "top = " << top << endl;
             top--;
-            cout << "top = " << top << endl;
         }
         return t;}
     
+    ////////////////////
     // Return the address of the item on top of the stack
     T * topaddress(){
         return stackArray[top];
     }
     
-
     
+    ////////////////////
     //Delete all of stacks
     void empty(){
         if (top == -1){
             return;
         }
-        while(top != 0){
-            delete stackArray[top];
+        while(top != -1){
             stackArray[top] = nullptr;
+            delete stackArray[top];
             top--;
         }
     }
     
+    ////////////////////
     //Print all results
     template <class A>
-    friend A** access(HanoiTower<A>);
+    friend void accessobject(HanoiTower<A>);
+    
+    template <class B>
+    friend void accesspointer(HanoiTower<B>);
 };
 
+//Accessing the objects the pointers in the Stack array are pointing at
 template <class A>
-A ** access(HanoiTower<A> stack){
-    return stack.stackArray;
+void accessobject(HanoiTower<A> stack){
+    for (int i = 0; i<= stack.top; i++){
+        cout << *stack.stackArray[i] << endl;
+    }
+}
+
+//Accessing the pointer in the Stack array
+template <class B>
+void accesspointer(HanoiTower<B> stack){
+    for (int i = 0; i<= stack.top; i++){
+        cout << *stack.stackArray[i] << endl;
+    }
 }
 
 int main() {
@@ -132,7 +154,7 @@ int main() {
     double Stack1 = 1;
     double Stack2 = 2;
     double Stack3 = 3;
-
+    
     cout << "Pushing Stack 1" << endl;
     stack.push(&Stack1);
     cout << "Pushing Stack 2" << endl;
@@ -144,20 +166,21 @@ int main() {
     
     cout << "The pointer at the top is: " << stack.topaddress()<<endl;
     
-    cout << *access(stack) << endl;
+    accessobject(stack);
     
     //access(stack);
-    /*cout<<"Poping the top object!"<<endl;
+    cout<<"Poping the top object!"<<endl;
     stack.pop();
-    
-    cout << stack.topaddress()<<endl;
-    printf(stack);*/
+    cout << "Displaying the stack: " << endl;
+    accessobject(stack);
     
     cout<<"Emptying the stack"<<endl;
     stack.empty();
+    cout << "Displaying the stack: " << endl;
+    accessobject(stack);
+    accesspointer(stack);
     cout<< "Is the stack empty? " << stack.isEmpty() << endl;
-    cout << *access(stack) << endl;
+    //cout << *access(stack) << endl;
     
     return 0;
 }
-
