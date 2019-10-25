@@ -125,10 +125,10 @@ public:
     
     template <class B>
     friend void displaypointer(HanoiTower<B>);
-   /*
+   
     template <class C>
-    friend C accessobject(HanoiTower<C>);
-    */
+    friend C accessobject(HanoiTower<C>, int);
+    
 };
 
 //Displaying all the objects the pointers in the Stack array are pointing at
@@ -147,16 +147,11 @@ void displaypointer(HanoiTower<B> stack){
     }
 }
 
-////////E R R O R/////////////////////////////////
-//Trying to access a particular element inside the stackArray
-//It can't seem to work, keeps giving error that "'stackArray' is a private member of HanoiTower<double>
-//I'm not sure what's wrong, is there anyway to do this?
-/*
 template <class C>
 C accessobject(HanoiTower<C> stack, int i){
     return (*stack.stackArray[i]);
 }
- */
+
 
 int main() {
     
@@ -177,6 +172,11 @@ int main() {
     cout << "Pushing Stack 3" << endl;
     stack.push(&Stack3);
     
+    int z = 0;
+    cout << "Enter the index of the object you wanna see: " << endl;
+    cin >> z;
+    cout << "The object at index " << z << " is " << accessobject(stack, z) << endl;
+    
     cout << "The number of plates in the stack is " << stack.length()<<endl;
     
     cout << "The pointer at the top is: " << stack.topaddress()<<endl;
@@ -186,6 +186,8 @@ int main() {
     
     //access(stack);
     cout<<"Poping the top object!"<<endl;
+    stack.pop();
+    stack.pop();
     stack.pop();
     cout << "Displaying the stack: " << endl;
     displayobject(stack);
@@ -199,13 +201,5 @@ int main() {
     //cout << *access(stack) << endl;
     
     
-    ////////Testing the error/////////////
-    /*
-     int z = 0;
-    cout << "Enter the index of the object you wanna see: " << endl;
-    cin >> z;
-    cout << "The object at index " << z << " is " << accessobject(stack, z) << endl;
-    */
     return 0;
 }
-
