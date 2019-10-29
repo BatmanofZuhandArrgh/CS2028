@@ -19,6 +19,11 @@ struct Room{
     string activities;
     double length, width;
     bool privateornot;
+    //We leave 4 spaces for windows. For example, if there are 2 windows north, 1 east
+    //The array should be {'N', 'N', 'E', '0'}
+    char windows[4];
+    //Each room will only have one to 4 doors, the array will show the wall the door is on. I.e: ['N', '0', '0', '0'}
+    char doors[4];
     
     // Overloading ==
     bool operator == (const Room & obj){
@@ -68,6 +73,9 @@ public:
     double areapublicspace();
     double areaprivatespace();
     void functionofRoom();
+    void displayWindows();
+    void displayDoors();
+    void displayConnectedness();
 };
 
 //////////Operations Definition ROW OF ROOM
@@ -93,8 +101,8 @@ void Row::appendNode(Room room){
 }
 }
 
-////////ERROR
-//Insert a room to the right of a room
+
+//Insert a room to the left of a roomtotheright, insert the room just before in the linked list
 void Row::insertNode(Room room, Room roomtotheright){
     ListRoom *nodePtr;
     ListRoom *previousNode=nullptr;
@@ -158,7 +166,7 @@ void Row::deleteNode(Room room){
         }
         
         //If If nodePtr is not at the end of the list
-        //Link the previous node to the node after nodePtr, and tdelete Nodeptr;
+        //Link the previous node to the node after nodePtr, and delete Nodeptr;
         if (nodePtr){
             previousNode->next = nodePtr->next;
             delete nodePtr;
@@ -195,6 +203,14 @@ void Row::displayRow(){
         cout << NodePtr->value.name << " | "; //Display just the name of the room;
         NodePtr = NodePtr->next;
     }
+    //cout << endl;
+    /*
+    NodePtr = head;
+    while(NodePtr!=nullptr){
+        cout << "____________"<< " ";
+        NodePtr = NodePtr->next;
+    }
+     */
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -350,6 +366,121 @@ void functionofRoomListing(vector<Row> myFloor){
 
 
 ////////////////////////////////////////////////////////////////////////////////
+//////////OPERATIONS THAT SHOW THE STATS OF THE FLOOR
+//////////WINDOWS AND DOORS OF ROOMS
+void Row::displayWindows(){
+    ListRoom *NodePtr;
+    //Put NodePtr onto the head of the linked list
+    NodePtr = head;
+    
+    // When the list is empty, display nothing
+    if (!head){
+        cout<<"The floor is empty"<< endl;
+    }
+    while(NodePtr!=nullptr){
+        cout << "Room " << NodePtr->value.name << " windows on the sides:";
+        for (int i = 0; i<4 ; i++){
+            if(NodePtr->value.windows[i] == 'E')
+                cout << " east";
+            if(NodePtr->value.windows[i] == 'N')
+                cout << " north";
+            if(NodePtr->value.windows[i] == 'W')
+                cout << " west";
+            if(NodePtr->value.windows[i] == 'S')
+                cout << " south";
+        }
+        cout << endl;
+        NodePtr = NodePtr->next;
+    }
+}
+// List windows of each room on the floor
+void windowsListing(vector<Row> myFloor){
+    for (int i = 0; i< myFloor.size(); i++){
+        myFloor[i].displayWindows();
+        cout << endl;
+    }
+}
+
+// Display each doors in each room in a row
+void Row::displayDoors(){
+    ListRoom *NodePtr;
+    //Put NodePtr onto the head of the linked list
+    NodePtr = head;
+    
+    // When the list is empty, display nothing
+    if (!head){
+        cout<<"The floor is empty"<< endl;
+    }
+    while(NodePtr!=nullptr){
+        cout << "Room " << NodePtr->value.name << " doors on the sides:";
+        for (int i = 0; i<4 ; i++){
+            if(NodePtr->value.doors[i] == 'E')
+                cout << " east,";
+            if(NodePtr->value.doors[i] == 'N')
+                cout << " north,";
+            if(NodePtr->value.doors[i] == 'W')
+                cout << " west,";
+            if(NodePtr->value.doors[i] == 'S')
+                cout << " south,";
+        }
+        cout << endl;
+        NodePtr = NodePtr->next;
+    }
+}
+// List doors of each room on the floor
+void doorsListing(vector<Row> myFloor){
+    for (int i = 0; i< myFloor.size(); i++){
+        myFloor[i].displayDoors();
+        cout << endl;
+    }
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+//////////OPERATIONS THAT SHOW THE STATS OF THE FLOOR
+//////////CONNECTEDNESS OF ROOMS
+//Display which space each room is connected to
+void Row::displayConnectedness(){
+    ListRoom *NodePtr;
+    ListRoom *PreviousPtr = nullptr;
+    ListRoom *temp;
+    //Put NodePtr onto the head of the linked list
+    NodePtr = head;
+    
+    // When the list is empty, display nothing
+    if (!head){
+        cout<<"The floor is empty"<< endl;
+    }
+    while(NodePtr!=nullptr){
+        cout << "Room " << NodePtr->value.name << " is connected to these spaces:";
+        for (int i = 0; i<4 ; i++){
+            if(NodePtr->value.doors[i] == 'E'){
+                temp = NodePtr->next;
+                cout <<temp->value.name;
+                cout << ",";
+            }
+            if(NodePtr->value.doors[i] == 'N' || NodePtr->value.doors[i] == 'S')
+                cout << " the hallway,";
+            if(NodePtr->value.doors[i] == 'W'){
+                cout<< PreviousPtr->value.name << ",";
+            }
+        }
+        cout << endl;
+        PreviousPtr = NodePtr;
+        NodePtr = NodePtr->next;
+    }
+}
+// List the connectedness of each room on the floor
+void connectednessListing(vector<Row> myFloor){
+    for (int i = 0; i< myFloor.size(); i++){
+        myFloor[i].displayConnectedness();
+        cout << endl;
+    }
+}
+
+
+
+////////////////////////////////////////////////////////////////////////////////
 //////////MAIN FUNCTION
 int main() {
     //Create the main floor plan
@@ -361,14 +492,16 @@ int main() {
     
     
     //Create a bunch of rooms
-    Room Bedroom1{" BedRoom1 ", "Sleeping",3 ,7, true};
-    Room Bedroom2{" BedRoom2 ", "Sleeping",3 ,7, true};
-    Room Library{" Library  ", "Reading",4 ,4, false};
-    Room Workshop{" Workshop ", "Machining and building",1, 10, false};
-    Room Bathroom{" BathRoom ", "Taking a shower",6 ,5, false};
-    Room Kitchen{" Kitchen  ", "Cooking",2 ,10, false};
-    Room DiningRoom{"DiningRoom", "Eating",3 ,7, false};
-    Room LivingRoom{"LivingRoom", "Hanging out and having fun", 5, 5, false};
+    //Order of
+    Room Bedroom1{" BedRoom1 ", "Sleeping",3 ,7, true, {'S', 'S', '0', '0'}, {'N', '0', '0', '0'}};
+    Room Bedroom2{" BedRoom2 ", "Sleeping",3 ,7, true, {'S', 'S', '0', '0'}, {'N', '0', '0', '0'}};
+    Room Library{" Library  ", "Reading",4 ,4, false, {'S', '0', '0', '0'}, {'N', '0', '0', '0'}};
+    Room Bathroom{" BathRoom ", "Taking a shower",6 ,5, false, {'S', 'W', '0', '0'}, {'N', '0', '0', '0'}};
+    Room Workshop{" Workshop ", "Machining and building",1, 10, false, {'N', 'W', '0', '0'}, {'S', '0', '0', '0'}};
+    Room Kitchen{" Kitchen  ", "Cooking",2 ,10, false, {'N', 'W', '0', '0'}, {'S', 'E', '0', '0'}};
+    Room DiningRoom{"DiningRoom", "Eating",3 ,7, false, {'N', '0', '0', '0'}, {'S', 'W', '0', '0'}};
+    Room LivingRoom{"LivingRoom", "Hanging out and having fun", 5, 5, false, {'N', '0', '0', '0'}, {'S', 'W', 'E', '0'}};
+    
     //Populate the rows with room
     Row1.appendNode(Bedroom1);
     Row1.appendNode(Bathroom);
@@ -380,8 +513,6 @@ int main() {
     Row2.appendNode(LivingRoom);
     Row2.appendNode(DiningRoom);
     Row2.appendNode(Workshop);
-    
-    
     
     // Delete a few rooms
     Row1.deleteNode(Bedroom1);
@@ -399,7 +530,7 @@ int main() {
     // Display the floor
     displayFloor(myFloor);
     
-    //Swap the positions of the rows
+    //Swap the positions of the rows,
     cout << "Swapping the rows of rooms" << endl;
     rowSwap(myFloor, 0, 1);
     
@@ -413,6 +544,9 @@ int main() {
     DisplayPublicorPrivate(myFloor);
     cout << endl;
     functionofRoomListing(myFloor);
+    windowsListing(myFloor);
+    doorsListing(myFloor);
+    connectednessListing(myFloor);
     
     cout << endl;
     return 69;
