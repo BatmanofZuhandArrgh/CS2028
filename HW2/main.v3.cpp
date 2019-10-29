@@ -95,33 +95,39 @@ void Row::appendNode(Room room){
 
 ////////ERROR
 //Insert a room to the right of a room
-void Row::insertNode(Room room, Room roomtotheleft){
+void Row::insertNode(Room room, Room roomtotheright){
     ListRoom *nodePtr;
-    ListRoom *previousNode;
+    ListRoom *previousNode=nullptr;
     ListRoom *newRoom;
+    //ListRoom *temp_node;
     
     //Creating the node and point the pointer to the null next node
     newRoom = new ListRoom;
     newRoom->value = room;
-    newRoom->next = NULL;
     
+    //If there's no node in the list, create the first Node with the newRoom
     if(!head){
         head = newRoom;
-        newRoom->next = nullptr;}
+        newRoom->next = nullptr;
+    }
     else{
         nodePtr = head;
         previousNode = nullptr;
         
-        while (nodePtr!=nullptr) {
+        while(nodePtr != nullptr && nodePtr->value != roomtotheright){
             previousNode = nodePtr;
             nodePtr = nodePtr->next;
-            if(nodePtr->value == roomtotheleft){
-                previousNode->next = newRoom;
-                newRoom->next = nodePtr;
-            }
-            else{
-                appendNode(room);
-            }
+        }
+        
+        //If the new node is to be the 1st in the list,
+        //insert before all other nodes
+        if (previousNode == nullptr){
+            head = newRoom;
+            newRoom->next = nodePtr;
+        }
+        else{
+            previousNode->next = newRoom;
+            newRoom->next = nodePtr;
         }
     }
 }
@@ -374,13 +380,18 @@ int main() {
     Row2.appendNode(LivingRoom);
     Row2.appendNode(DiningRoom);
     Row2.appendNode(Workshop);
-    //Row1.insertNode(Bathroom, Bedroom);
+    
+    
     
     // Delete a few rooms
     Row1.deleteNode(Bedroom1);
     Row1.deleteNode(Kitchen);
     Row2.deleteNode(DiningRoom);
     
+    //I inserted the room and deleted it right away, because it makes a bad display. Please test it as you will.
+    //The current state is just easier to look at
+    Row2.insertNode(Bathroom, Kitchen);
+    Row2.deleteNode(Bathroom);
     // Populate the floor with rows of rooms
     myFloor.push_back(Row1);
     myFloor.push_back(Row2);
