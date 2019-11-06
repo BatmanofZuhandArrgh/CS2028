@@ -63,7 +63,7 @@ public:
     LinkedList(){
         head = nullptr;
     }
-    
+    /*
     //Destructor
     ~LinkedList(){
         ListNode * NodePtr;
@@ -77,7 +77,7 @@ public:
             NodePtr = NextNode;
         }
         cout << "Deleting the linked list" << endl;
-    };
+    };*/
     
     //Linked
     void AddItems(T);
@@ -196,24 +196,28 @@ template <class T>
 void LinkedList<T>::Reset(){
     P = head;
 }
-/*
+
 template <class T>
 T LinkedList<T>::seeNext(){
-    ListNode * NodePtr;
-    
     if(!head)
-        throw logic_error("Empty list");
+        throw logic_error("Empty LinkedList");
     
     if(P == head){
         P = P->next;
         return head->value;
     }
-    else if(P->next = nullptr){
+    else if(P == nullptr){
+        Reset();
         return P->value;
-        
-    else
-        return P->value;
-}*/
+    }
+    else{
+    ListNode * NodePtr;
+
+    NodePtr = P;
+    P = P->next;
+    return NodePtr->value;
+    }
+}
 
 template <class T>
 T LinkedList<T>::seeAt(int i) {
@@ -253,17 +257,26 @@ int main() {
     superheroes Superman{"Superman", 1};
     superheroes Batman{"Batman", 2};
     superheroes WonderWoman{"WonderWoman",3};
+    superheroes Flash{"Flash", 4};
+    superheroes GreenLantern{"Green Lantern",5};
     
     DC.AddItems(Superman);
     DC.AddItems(Batman);
     DC.AddItems(WonderWoman);
+    DC.AddItems(Flash);
+    DC.AddItems(GreenLantern);
     DC.Reset();
     
     cout << "Superman is in the list :" << DC.IsInList(Superman) << endl;
     
     cout << "The number at 2 is: ";
     cout << DC.seeAt(0).Name << endl;
-    
+    cout << DC.seeNext().Name << endl;
+    cout << DC.seeNext().Name << endl;
+    cout << DC.seeNext().Name << endl;
+    cout << DC.seeNext().Name << endl;
+    cout << DC.seeNext().Name << endl;
+    cout << DC.seeNext().Name << endl;
     //Removing from the list
     cout << DC.GetItems(Batman).num <<endl;
     cout << DC.GetItems(Superman).num <<endl;
