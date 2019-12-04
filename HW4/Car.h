@@ -264,6 +264,30 @@ public:
         }
     }
     
+    // 6. The Passenger is in the car and started pushing the controller button, to order which floor to go to
+    void ControllerOrderProcessed(Passenger A){
+        if(A.getdestFloor() > CurrentFloor)
+            ServiceQueueUp.InsertNodeUp(A.getoriginFloor());
+        else if(A.getdestFloor() < CurrentFloor)
+            ServiceQueueDown.InsertNodeDown(A.getoriginFloor());
+    }
+    
+    //////// MAIN OPERATIONS OF THE ELEVATOR////////
+    //I. One single trip in one direction
+    void ElevatorSmallTrip(vector<Passenger> PassengerVector){
+        // Depends on the position of the first person to push the button, the car will decide to go up or down
+        HallwayButtonPushed(PassengerVector[0]);
+        MovingUporDown();
+        
+        // Iterate through the entire vector to add orders into the queues
+        for (int i = 0; i < PassengerVector.size(); i++){
+            HallwayOrderProcessed(PassengerVector[i]);
+        }
+        
+        if(tripDirection == "Up"){
+            
+        }
+    }
 
 };
 
