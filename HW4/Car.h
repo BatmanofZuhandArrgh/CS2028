@@ -272,11 +272,17 @@ public:
             ServiceQueueDown.InsertNodeDown(A.getoriginFloor());
     }
     
-    //////// MAIN OPERATIONS OF THE ELEVATOR////////
+        //////// MAIN OPERATIONS OF THE ELEVATOR////////
     //I. One single trip in one direction
     void ElevatorSmallTrip(vector<Passenger> PassengerVector){
+        //Load the list of passengers onto the List of passenger inside the class
+        for (int i = 0; i < PassengerVector.size(); i++){
+            ListofPassenger.push_back(PassengerVector[i]);
+            ListofPassenger[i].setHallwayButton();
+        }
+
         // Depends on the position of the first person to push the button, the car will decide to go up or down
-        HallwayButtonPushed(PassengerVector[0]);
+        HallwayButtonPushed(ListofPassenger[0]);
         MovingUporDown();
         
         // Iterate through the entire vector to add orders into the queues
@@ -285,7 +291,36 @@ public:
         }
         
         if(tripDirection == "Up"){
+            cout << "The elevator's going up!" << endl;
+            cout << "The current floor is: " << CurrentFloor << endl;
             
+            cout << "The Queue going up are: " << endl;
+            showServiceQueueUp();
+            
+            while(!ServiceQueueUp.isEmpty()){
+                Carmovesbetweenfloor(ServiceQueueUp.peekHead());
+                cout << "The floor is " << CurrentFloor << endl;
+                ServiceQueueUp.dequeue();
+            }
+            
+            showServiceQueueUp();
+        }
+        
+        
+        else if(tripDirection == "Down"){
+            cout << "The elevator's going Down!" << endl;
+            cout << "The current floor is: " << CurrentFloor << endl;
+            
+            cout << "The Queue going down are: " << endl;
+            showServiceQueueDown();
+            
+            while(!ServiceQueueDown.isEmpty()){
+                Carmovesbetweenfloor(ServiceQueueDown.peekHead());
+                cout << "The floor is " << CurrentFloor << endl;
+                ServiceQueueDown.dequeue();
+            }
+            
+            showServiceQueueDown();
         }
     }
 
